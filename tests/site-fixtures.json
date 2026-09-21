@@ -1,0 +1,50 @@
+{
+  "homeSections": ["what-we-do", "how-we-work", "digital-clinic", "about", "contact"],
+  "pages": [
+    {
+      "route": "/",
+      "path": "",
+      "file": "index.html",
+      "title": "MainSource — AI & Software Solutions in Montenegro",
+      "heading": "Technology for real business problems.",
+      "content": ["AI & Automation", "Digital Products", "Business Tools", "Technology Strategy", "Understand", "Explore", "Build", "Technology for Local Business.", "20 years of experience"],
+      "subjects": ["Let’s discuss a business problem", "Workshop or Digital Clinic enquiry"]
+    },
+    {
+      "route": "/privacy",
+      "path": "privacy/",
+      "file": "privacy/index.html",
+      "title": "Privacy Policy — MainSource",
+      "heading": "Privacy Policy",
+      "content": ["Browsing this website", "Information you choose to share", "GitHub Pages", "Questions and requests", "Website operator and legal details"],
+      "subjects": ["Privacy request", "Legal enquiry"]
+    },
+    {
+      "route": "/terms",
+      "path": "terms/",
+      "file": "terms/index.html",
+      "title": "Terms of Use — MainSource",
+      "heading": "Terms of Use",
+      "content": ["Information, not a services agreement", "Lawful use and website content", "Accuracy and responsibility", "Website operator and legal details"],
+      "subjects": ["Website terms enquiry", "Legal enquiry"]
+    },
+    {
+      "route": "/data-deletion",
+      "path": "data-deletion/",
+      "file": "data-deletion/index.html",
+      "title": "Data Deletion — MainSource",
+      "heading": "Data Deletion",
+      "content": ["No website account to delete", "How to make a request", "What happens next", "Records that may need to remain", "Information held by other providers", "Website operator and legal details"],
+      "subjects": ["Data deletion request", "Legal enquiry"]
+    },
+    {
+      "route": "/404",
+      "path": "404.html",
+      "file": "404.html",
+      "title": "Page Not Found — MainSource",
+      "heading": "This page isn’t here.",
+      "content": ["404 / A little off course", "Back to MainSource"],
+      "subjects": []
+    }
+  ]
+}

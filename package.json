@@ -1,0 +1,39 @@
+{
+  "name": "mainsource-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "predev": "npm run assets",
+    "dev": "vite --host 127.0.0.1",
+    "assets": "node scripts/generate-assets.mjs",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && npm run assets && vite build && vite build --ssr src/entry-server.tsx --outDir .server && node scripts/prerender.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test:static": "node --test tests/static.test.mjs",
+    "test:e2e": "playwright test",
+    "check": "npm run build && npm run test:static && npm run test:e2e"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.2.8",
+    "@fontsource-variable/manrope": "^5.2.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.0"
+  }
+}
