@@ -1,5 +1,6 @@
 {
   "homeSections": ["what-we-do", "how-we-work", "digital-clinic", "about", "contact"],
+  "footer": ["© MAINSOURCE DOO", "PIB: 03448762 · Reg. No: 51042801", "Budva, Montenegro"],
   "pages": [
     {
       "route": "/",
@@ -7,7 +8,7 @@
       "file": "index.html",
       "title": "MainSource — AI & Software Solutions in Montenegro",
       "heading": "Technology for real business problems.",
-      "content": ["AI & Automation", "Digital Products", "Business Tools", "Technology Strategy", "Understand", "Explore", "Build", "Technology for Local Business.", "20 years of experience"],
+      "content": ["AI & Automation", "Digital Products", "Business Tools", "Technology Strategy", "Understand", "Explore", "Build", "Technology for Local Business.", "20 years of experience", "Based in Tivat, Montenegro"],
       "subjects": ["Let’s discuss a business problem", "Workshop or Digital Clinic enquiry"]
     },
     {
@@ -16,26 +17,15 @@
       "file": "privacy/index.html",
       "title": "Privacy Policy — MainSource",
       "heading": "Privacy Policy",
-      "content": ["Browsing this website", "Information you choose to share", "GitHub Pages", "Questions and requests", "Website operator and legal details"],
-      "subjects": ["Privacy request", "Legal enquiry"]
-    },
-    {
-      "route": "/terms",
-      "path": "terms/",
-      "file": "terms/index.html",
-      "title": "Terms of Use — MainSource",
-      "heading": "Terms of Use",
-      "content": ["Information, not a services agreement", "Lawful use and website content", "Accuracy and responsibility", "Website operator and legal details"],
-      "subjects": ["Website terms enquiry", "Legal enquiry"]
-    },
-    {
-      "route": "/data-deletion",
-      "path": "data-deletion/",
-      "file": "data-deletion/index.html",
-      "title": "Data Deletion — MainSource",
-      "heading": "Data Deletion",
-      "content": ["No website account to delete", "How to make a request", "What happens next", "Records that may need to remain", "Information held by other providers", "Website operator and legal details"],
-      "subjects": ["Data deletion request", "Legal enquiry"]
+      "content": [
+        "MainSource operates this website as an informational company website.",
+        "We do not use user accounts, analytics, advertising cookies, or tracking technologies, and we do not collect personal information through this website.",
+        "If you contact us directly by email, WhatsApp, or another communication channel, we may process the information you provide solely for the purpose of responding to your request.",
+        "We do not sell personal information to third parties.",
+        "For privacy-related questions, contact: hello@mainsource.me",
+        "Last updated: September 2026"
+      ],
+      "subjects": ["Privacy request"]
     },
     {
       "route": "/404",

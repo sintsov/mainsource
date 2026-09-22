@@ -1,18 +1,15 @@
 export const company = {
   name: 'MainSource',
   tagline: 'AI SOFTWARE SOLUTIONS',
-  location: 'Montenegro',
-  // Placeholder: confirm this mailbox is active before launch.
+  location: 'Tivat, Montenegro',
   email: 'hello@mainsource.me',
-  // Replace with the actual company profile URL. An empty value shows a labeled placeholder.
-  linkedInUrl: '',
   // Optional: international digits only, without + or spaces. Empty hides WhatsApp.
   whatsappNumber: '',
   legal: {
-    entityName: '[Legal entity name — to be added]',
-    address: '[Registered address — to be added]',
-    registrationNumber: '[Company registration number — to be added]',
-    taxNumber: '[VAT / tax number — to be added]',
+    entityName: 'MAINSOURCE DOO',
+    location: 'Budva, Montenegro',
+    registrationNumber: '51042801',
+    taxNumber: '03448762',
   },
 } as const
 
@@ -25,14 +22,6 @@ export const routes = {
     title: 'Privacy Policy — MainSource',
     description: 'How MainSource handles information voluntarily provided through direct contact, and how this static website works without analytics or tracking cookies.',
   },
-  '/terms': {
-    title: 'Terms of Use — MainSource',
-    description: 'Terms for using the MainSource company website, including website information, intellectual property, external links and direct contact.',
-  },
-  '/data-deletion': {
-    title: 'Data Deletion — MainSource',
-    description: 'How to request deletion of personal information you have voluntarily shared with MainSource through email or other direct contact.',
-  },
   '/404': {
     title: 'Page Not Found — MainSource',
     description: 'This page could not be found. Return to MainSource to explore practical AI and software solutions for your business.',
@@ -40,7 +29,6 @@ export const routes = {
 } as const
 
 export type Route = keyof typeof routes
-export type LegalPage = 'privacy' | 'terms' | 'data-deletion'
 
 export const basePath = import.meta.env.BASE_URL
 export const asset = (path: string) => `${basePath}${path.replace(/^\//, '')}`

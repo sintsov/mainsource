@@ -90,7 +90,7 @@ test('deployment manifest describes a normalized public origin and built prefix'
 })
 
 for (const page of documents) {
-  test(`${page.route}: complete prerendered content and explicit company placeholders`, () => {
+  test(`${page.route}: complete prerendered content and company details`, () => {
     assert.match(page.html, /^<!doctype html>/i)
     assert.equal(tags(page.html, 'html')[0]?.attributes.lang, 'en')
     assert.equal(tags(page.html, 'main').length, 1)
@@ -101,20 +101,12 @@ for (const page of documents) {
     const content = text(page.html)
     for (const expected of page.content) assert.ok(content.includes(expected), `Missing prerendered content: ${expected}`)
     for (const detail of Object.values(company.legal)) assert.ok(content.includes(detail), `Missing configured legal detail: ${detail}`)
-    if (Object.values(company.legal).some((detail) => detail.startsWith('[')) && page.route !== '/' && page.route !== '/404') {
-      assert.ok(content.includes('Draft legal content—not ready for public launch.'))
-      assert.ok(content.includes('placeholders below are not verified company information.'))
-    }
-    // Legal placeholders are intentional. Build/template placeholders are not.
+    for (const line of fixtures.footer) assert.ok(content.includes(line), `Missing footer line: ${line}`)
+    assert.doesNotMatch(content, /Terms of Use|Data Deletion|LinkedIn|Draft legal|details pending|to be added/)
+    // No unresolved build/template placeholders may reach the public site.
     assert.doesNotMatch(page.html, /<!--\s*(?:app-html|\/?site-head)\s*-->|%[A-Z][A-Z_]+%|__VITE_[\w_]*__|\[object Object\]/)
     assert.equal(tags(page.html, 'form').length, 0, 'The site must not invent a contact form')
-    const socialLinks = tags(page.html, 'a').filter(({ attributes }) => attributes.href === company.linkedInUrl)
-    if (company.linkedInUrl) {
-      assert.equal(socialLinks.length, 1, 'The configured LinkedIn profile must be linked')
-    } else {
-      assert.ok(content.includes('LinkedIn (coming soon)'))
-      assert.ok(!tags(page.html, 'a').some(({ attributes }) => /linkedin\.com/i.test(attributes.href ?? '')), 'Unconfigured LinkedIn must not be a fake clickable profile')
-    }
+    assert.ok(!tags(page.html, 'a').some(({ attributes }) => /linkedin\.com/i.test(attributes.href ?? '')), 'No LinkedIn link should remain')
     const mailLinks = tags(page.html, 'a').map(({ attributes }) => attributes.href).filter((href) => href?.startsWith('mailto:'))
     const subjects = mailLinks.map((href) => {
       const address = new URL(href)
@@ -189,6 +181,10 @@ test('sitemap and robots list the actual deployment and omit the 404 page', () =
   assert.deepEqual(locations.sort(), publicPages.map((page) => page.url.href).sort())
   assert.equal(new Set(locations).size, locations.length)
   assert.ok(!locations.includes(`${siteUrl}404/`) && !locations.includes(`${siteUrl}404.html`), 'The error page must not be indexed')
+  for (const route of ['terms', 'data-deletion']) {
+    assert.equal(existsSync(join(dist, route)), false, `Removed /${route}/ must not remain in the build`)
+    assert.ok(!locations.some((location) => location.includes(`/${route}/`)))
+  }
   for (const location of locations) assert.ok(localFile(location, siteUrl, 'Sitemap location'))
   const robots = readFileSync(join(dist, 'robots.txt'), 'utf8')
   assert.match(robots, /^User-agent: \*$/m)

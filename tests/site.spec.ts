@@ -121,17 +121,25 @@ for (const expected of fixtures.pages) {
       return url.searchParams.get('subject')
     })
     expect([...new Set(subjects)].sort()).toEqual([...expected.subjects].sort())
-    const socialLink = page.getByRole('link', { name: /linkedin/i })
-    if (build.company.linkedInUrl) await expect(socialLink).toHaveAttribute('href', build.company.linkedInUrl)
-    else await expect(socialLink).toHaveCount(0)
+    await expect(page.getByRole('link', { name: /linkedin|terms of use|data deletion/i })).toHaveCount(0)
+    await expect(page.locator('.footer-company p')).toHaveText(fixtures.footer)
+    await expect(page.getByRole('navigation', { name: 'Legal links' }).getByRole('link')).toHaveCount(1)
+    await expect(page.getByRole('contentinfo')).not.toContainText('Tivat')
+    await expect(page.locator('.legal-notice, .company-details')).toHaveCount(0)
+    if (expected.route === '/') {
+      for (const selector of ['.hero-location', '#about', '.contact-place']) {
+        await expect(page.locator(selector)).toBeVisible()
+        await expect(page.locator(selector)).toContainText('Based in Tivat, Montenegro')
+      }
+      await expect(page.getByRole('main')).not.toContainText('Budva')
+    }
+    if (expected.route === '/privacy') await expect(page.locator('.legal-body p')).toHaveText(expected.content)
     await loadedImages(page)
     await assertNoOverflow(page)
   })
 
-  test(`${expected.route}: WCAG accessibility with legal details expanded`, async ({ page }, testInfo) => {
+  test(`${expected.route}: WCAG accessibility`, async ({ page }, testInfo) => {
     await visit(page, expected.path)
-    await page.getByRole('contentinfo').locator('summary').click()
-    await expect(page.getByRole('contentinfo').locator('details')).toHaveAttribute('open', '')
     await loadedImages(page)
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
     await assertAccessible(page, testInfo, 'wcag-violations')
@@ -139,7 +147,7 @@ for (const expected of fixtures.pages) {
 }
 
 test('unknown nested URLs return a real 404 with a working home link', async ({ page, request, runtimeChecks }) => {
-  for (const path of ['not-a-real-route/deep/link/', 'privacy/not-a-page/']) {
+  for (const path of ['not-a-real-route/deep/link/', 'privacy/not-a-page/', 'terms/', 'data-deletion/', 'terms/index.html', 'data-deletion/index.html']) {
     const url = localUrl(path)
     const response = await request.get(url)
     expect(response.status(), url).toBe(404)
@@ -236,7 +244,7 @@ test('the first keyboard stop is a visible skip link that bypasses the header', 
   await expect(page.getByRole('main').getByRole('link').first()).toBeFocused()
 })
 
-test('footer legal links, policy navigation and hard refresh work without routing fallback', async ({ page }) => {
+test('footer privacy link, return navigation and hard refresh work without routing fallback', async ({ page }) => {
   await visit(page)
   for (const legal of legalPages) {
     await page.getByRole('contentinfo').getByRole('link', { name: legal.heading, exact: true }).click()
@@ -246,15 +254,8 @@ test('footer legal links, policy navigation and hard refresh work without routin
     const response = await page.reload({ waitUntil: 'load' })
     expect(response?.status(), `Hard refresh of ${legal.path}`).toBe(200)
     await expect(page).toHaveTitle(legal.title)
-    await expect(page.getByRole('navigation', { name: 'Legal policies' }).getByRole('link', { name: legal.heading, exact: true }))
-      .toHaveAttribute('aria-current', 'page')
-  }
-  for (const legal of legalPages) {
-    const link = page.getByRole('navigation', { name: 'Legal policies' }).getByRole('link', { name: legal.heading, exact: true })
-    await expect(link).toHaveAttribute('href', `${build.basePath}${legal.path}`)
-    await link.click()
-    await page.waitForLoadState('load')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(legal.heading)
+    await expect(page.getByRole('navigation', { name: 'Legal links' }).getByRole('link', { name: legal.heading, exact: true }))
+      .toHaveAttribute('href', `${build.basePath}${legal.path}`)
   }
   await page.getByRole('link', { name: 'Back to home', exact: true }).click()
   await expect(page).toHaveURL(localUrl())

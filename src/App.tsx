@@ -3,7 +3,7 @@ import { Header } from './components/Header'
 import { Footer } from './components/Footer'
 import { Home } from './pages/Home'
 import { Legal } from './pages/Legal'
-import { pageHref, type Route, type LegalPage } from './config'
+import { pageHref, type Route } from './config'
 
 export function App({ route }: { route: Route }) {
   useEffect(() => {
@@ -31,7 +31,7 @@ export function App({ route }: { route: Route }) {
           <p>Let’s get back to the business problem.</p>
           <a className="button button-primary" href={pageHref('/')}>Back to MainSource <span aria-hidden="true">↗</span></a>
         </main>
-      ) : <Legal page={route.slice(1) as LegalPage} />}
+      ) : <Legal />}
       <Footer />
     </>
   )

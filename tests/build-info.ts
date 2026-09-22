@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 export const repositoryRoot = fileURLToPath(new URL('../', import.meta.url))
 
-type PublicCompany = { email: string; linkedInUrl: string; legal: Record<string, string> }
+type PublicCompany = { email: string; location: string; legal: Record<string, string> }
 
 function readBuildInfo(): { basePath: string; siteUrl: string; company: PublicCompany } {
   let info: { basePath?: unknown; siteUrl?: unknown; company?: PublicCompany }

@@ -31,7 +31,7 @@ export function Home() {
               <a className="button button-quiet" href={sectionHref('what-we-do')}>What we do <Icon name="arrow" /></a>
             </div>
           </div>
-          <p className="hero-location"><Icon name="location" /><span>Based in Montenegro.<br />Working with businesses everywhere.</span></p>
+          <p className="hero-location"><Icon name="location" /><span>Based in {company.location}<br />Working with businesses everywhere.</span></p>
         </div>
         <div className="hero-foot"><span>AI & automation</span><span>Digital products</span><span>Business tools</span><a href={sectionHref('what-we-do')} aria-label="Explore what we do"><span>Explore</span><span aria-hidden="true">↓</span></a></div>
       </section>
@@ -92,7 +92,7 @@ export function Home() {
           <div data-reveal><p className="eyebrow">About MainSource</p><h2 id="about-title">Experience from engineering to business transformation.</h2><p className="about-signature"><span className="small-rule" />Built on experience.<br />Focused on what’s next.</p></div>
           <div className="about-copy" data-reveal>
             <p className="about-lead">We start with the business problem, not the technology.</p>
-            <p>MainSource is a Montenegro-based technology company focused on AI, software products, and business process automation.</p>
+            <p>Based in {company.location}, MainSource is a technology company focused on AI, software products, and business process automation.</p>
             <p>The company is founded by an engineering leader with more than <strong>20 years of experience</strong> in software development, architecture, digital products, and technology management.</p>
             <p>This experience includes building and scaling engineering teams, creating technology platforms from the ground up, improving software delivery and infrastructure, and using technology to support business growth.</p>
             <p>Today, MainSource focuses on practical AI adoption, digital products, and automation — starting from real business problems and turning them into simple, effective technology solutions.</p>
@@ -111,7 +111,7 @@ export function Home() {
               <a className="contact-email" href={emailHref()}>{company.email}<Icon name="diagonal" /></a>
               <p className="contact-note">A simple email is a good place to start.</p>
               {company.whatsappNumber && <a className="text-link" href={`https://wa.me/${company.whatsappNumber}`} target="_blank" rel="noopener noreferrer">Contact on WhatsApp <span className="sr-only">(opens in a new tab)</span><Icon name="diagonal" /></a>}
-              <p className="contact-place"><Icon name="location" />{company.location} · Local & international projects</p>
+              <p className="contact-place"><Icon name="location" /><span>Based in {company.location} · Local & international projects</span></p>
             </div>
           </div>
         </div>
