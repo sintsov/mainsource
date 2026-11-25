@@ -105,7 +105,9 @@ h2 { font-size: clamp(34px, 3.6vw, 52px); line-height: 1.14; letter-spacing: -.0
 .service > p { font-size: 14px; line-height: 1.8; color: var(--muted); }
 .service > .service-outcome { font-size: 12px; line-height: 1.65; color: var(--ink); margin-top: auto; padding-top: 29px; max-width: 220px; }
 
-.featured-project { padding-block: clamp(40px, 5.5vw, 80px); }
+.success-stories { padding-block: clamp(40px, 5.5vw, 80px); }
+.stories-label { display: flex; gap: 14px; align-items: center; margin-bottom: 20px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.stories-label::after { content: ''; height: 1px; flex: 1; background: var(--line); }
 .verdura-art { margin: 0; }
 .verdura-stage { --device-width: 236px; --rim: clamp(3px, .38vw, 5px); --curve: clamp(14px, 2.3vw, 30px); display: grid; grid-template-columns: repeat(2, minmax(0, var(--device-width))); justify-content: center; align-items: center; gap: clamp(12px, 2vw, 26px); padding: clamp(20px, 3.4vw, 50px) clamp(16px, 2.8vw, 40px); background: radial-gradient(ellipse at top left, #fae8d9, transparent 62%), linear-gradient(135deg, #ecc0ae, #efd6be 53%, #d2dcbf); border-radius: 6px; }
 .verdura-phone { display: block; min-width: 0; padding: var(--rim); border-radius: var(--curve); background: #272e29; box-shadow: 0 0 0 1px #72756c, inset 0 1px 2px #fff9, 0 12px 19px -9px #58402b66; }
@@ -125,29 +127,42 @@ a.verdura-phone { cursor: zoom-in; }
 .case-stores a { min-height: 44px; }
 .case-foot { grid-area: foot; margin-top: clamp(8px, 2vw, 28px); display: flex; justify-content: space-between; align-items: center; gap: 22px; }
 .case-goal { padding-left: 20px; border-left: 2px solid var(--accent); max-width: 62ch; font-family: var(--font-display); font-size: clamp(18px, 1.6vw, 23px); line-height: 1.6; letter-spacing: -.02em; }
-.case-foot .text-link { flex-shrink: 0; min-height: 44px; color: var(--muted); font-size: 13px; }
 @media (max-width: 720px) {
   .case-feature { grid-template-columns: 1fr; grid-template-areas: 'heading' 'art' 'intro' 'foot'; }
   .case-intro { font-size: 15px; }
   .case-foot { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
-.process-section { background: var(--ink); color: var(--paper); }
-.process-section .eyebrow { color: var(--dark-muted); }
-.process-section h2 span { color: var(--dark-muted); }
-.process-section .section-intro { color: var(--dark-muted); }
-.process-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 60px; padding: 0; margin: 66px 0 0; list-style: none; }
-.process-grid li { display: flex; flex-direction: column; border-top: 1px solid var(--dark-line); padding-top: 23px; }
-.step-top { display: flex; align-items: center; justify-content: space-between; }
-.step-number { font-family: ui-monospace, monospace; color: var(--accent); font-size: 12px; }
-.step-top .icon { width: 22px; color: #858980; }
-.process-grid li:last-child .step-top .icon { transform: rotate(-45deg); }
-.process-grid h3 { font-size: 29px; font-weight: 500; letter-spacing: -.035em; margin-top: 28px; }
-.process-grid p { color: var(--dark-muted); font-size: 15px; line-height: 1.8; margin-top: 14px; max-width: 300px; }
-.step-note { font-size: 11px; color: var(--dark-muted); padding-top: 24px; margin-top: auto; }
-.process-quote { display: flex; align-items: flex-start; gap: 30px; border-top: 1px solid var(--dark-line); padding-top: 35px; margin-top: 58px; }
-.quote-mark { color: var(--accent); font-family: var(--font-display); font-size: 78px; line-height: .9; }
-.process-quote p { max-width: 810px; font-family: var(--font-display); font-size: clamp(19px, 2.1vw, 26px); line-height: 1.65; font-weight: 400; letter-spacing: -.025em; }
+.help-section { padding-block: clamp(32px, 4vw, 56px); border-bottom: 1px solid var(--line); }
+.help-section h2 { color: var(--muted); }
+.help-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 15px; }
+.help-cards article { padding: 19px 20px; border-radius: 10px; background: var(--soft); }
+.help-cards .icon { width: 19px; height: 19px; color: var(--muted); }
+.help-cards h3 { font-size: 18px; line-height: 1.35; letter-spacing: -.025em; margin-top: 12px; font-weight: 650; }
+.help-cards p { color: var(--muted); margin-top: 5px; font-size: 14px; line-height: 1.55; }
+.community-section { background: var(--soft); border-block: 1px solid var(--line); }
+.community-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; margin-top: 24px; }
+.community-actions .text-link, .whatsapp-link { min-height: 44px; }
+.reel-button { background: var(--paper); border: 1px solid var(--ink); min-height: 44px; padding: 10px 16px; cursor: pointer; }
+.reel-button:hover { color: var(--paper); background: var(--ink); }
+.reel-note { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; }
+.community-player { display: block; width: min(100%, 420px); height: 580px; border: 0; margin-top: 20px; background: var(--paper); }
+@media (max-width: 560px) { .help-cards { grid-template-columns: 1fr; gap: 8px; } .help-cards article { display: grid; grid-template-columns: 22px 1fr; column-gap: 12px; align-items: center; padding: 14px 16px; } .help-cards h3 { margin: 0; } .help-cards p { grid-column: 2; margin-top: 2px; } }
+
+.language-switch { display: flex; align-items: center; flex-shrink: 0; gap: 6px; font-size: 12px; white-space: nowrap; }
+.language-switch > span + span { border-left: 1px solid var(--line); padding-left: 6px; }
+.language-switch [aria-current] { color: var(--ink); font-weight: 720; }
+.language-switch a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 3px; color: var(--muted); }
+.language-switch .lang-fragment { display: none; }
+html:has(:is(#what-we-do,#how-we-help,#how-we-work,#work,#digital-clinic,#community,#about,#contact):target) .lang-home { display: none; }
+html:has(#what-we-do:target) [href$="#what-we-do"].lang-fragment,
+html:has(#how-we-help:target) [href$="#how-we-help"].lang-fragment,
+html:has(#how-we-work:target) [href$="#how-we-work"].lang-fragment,
+html:has(#work:target) [href$="#work"].lang-fragment,
+html:has(#digital-clinic:target) [href$="#digital-clinic"].lang-fragment,
+html:has(#community:target) [href$="#community"].lang-fragment,
+html:has(#about:target) [href$="#about"].lang-fragment,
+html:has(#contact:target) [href$="#contact"].lang-fragment { display: inline-flex; }
 
 .clinic-grid { display: grid; grid-template-columns: 1.08fr 1fr; align-items: center; gap: clamp(45px, 8vw, 130px); }
 .clinic-copy h2 { margin-top: 30px; }
@@ -209,6 +224,7 @@ a.verdura-phone { cursor: zoom-in; }
 .legal-body { max-width: 760px; margin-top: 32px; }
 .legal-body p { font-size: 15px; line-height: 1.85; color: var(--muted); }
 .legal-body p + p { margin-top: 20px; }
+.legal-player-note { max-width: 760px; margin-top: 32px; padding: 16px 20px; background: var(--soft); color: var(--muted); font-size: 14px; line-height: 1.65; }
 .legal-body a { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; overflow-wrap: anywhere; }
 .legal-body a:hover { text-decoration-color: var(--accent-text); }
 .not-found { padding-block: 120px; }
@@ -232,10 +248,17 @@ a.verdura-phone { cursor: zoom-in; }
   .hero-location { max-width: 210px; }
   .services-grid { gap: 24px; }
   .service h3 { font-size: 17px; }
-  .process-grid { gap: 40px; }
   .contact-grid { gap: 45px; }
 }
-@media (max-width: 959px) {
+@media (min-width: 1200px) {
+  .header-inner { gap: clamp(12px, 1.4vw, 20px); }
+  .brand { width: 200px; }
+  .desktop-nav { gap: clamp(12px, 1.3vw, 20px); }
+  .desktop-nav a, .header-contact { white-space: nowrap; }
+  .header-contact { margin-left: 0; gap: 10px; }
+}
+@media (max-width: 1199px) {
+  .language-switch { margin-left: auto; }
   .header-inner { min-height: 80px; justify-content: space-between; }
   .desktop-nav, .header-contact { display: none; }
   .mobile-menu { display: block; }
@@ -249,6 +272,9 @@ a.verdura-phone { cursor: zoom-in; }
   .mobile-menu nav a { display: flex; align-items: center; justify-content: space-between; padding-block: 16px; border-bottom: 1px solid var(--line); font-size: 17px; }
   .mobile-menu nav a:last-child { border: 0; color: var(--accent-text); }
   .mobile-menu nav .icon { width: 18px; height: 18px; }
+  .mobile-menu nav { max-height: calc(100dvh - 82px); overflow-y: auto; }
+}
+@media (max-width: 959px) {
   .hero-side-note { display: none; }
   .hero h1 { font-size: clamp(60px, 9.8vw, 90px); }
   .hero-bottom { flex-direction: column; align-items: flex-start; gap: 22px; }
@@ -259,9 +285,6 @@ a.verdura-phone { cursor: zoom-in; }
   .service h3 { font-size: 22px; }
   .service > p { max-width: 310px; }
   .service-icon { margin-bottom: 20px; }
-  .process-grid { gap: 30px; }
-  .process-grid h3 { font-size: 24px; }
-  .process-grid p { font-size: 14px; }
   .clinic-grid { gap: 38px; }
   .clinic-paper { padding: 25px; }
   .clinic-questions p { font-size: 11px; }
@@ -270,8 +293,9 @@ a.verdura-phone { cursor: zoom-in; }
 }
 @media (max-width: 639px) {
   html { scroll-padding-top: 88px; }
-  .header-inner { min-height: 74px; }
-  .brand { width: 194px; margin-left: -16px; }
+  .header-inner { min-height: 74px; gap: 8px; }
+  .brand { width: clamp(118px, 34vw, 178px); margin-left: -10px; }
+  .mobile-menu summary { gap: 7px; padding-inline: 3px; }
   .hero { padding-top: 40px; }
   .hero-eyebrow { font-size: 9px; letter-spacing: .08em; gap: 8px; }
   .hero-heading-row { margin-top: 30px; }
@@ -295,15 +319,6 @@ a.verdura-phone { cursor: zoom-in; }
   .service > p { font-size: 13px; line-height: 1.75; }
   .service > .service-outcome { font-size: 11px; padding-top: 20px; }
   .service-icon .icon { width: 25px; height: 25px; }
-  .process-grid { grid-template-columns: 1fr; margin-top: 42px; gap: 34px; }
-  .step-top { justify-content: flex-start; gap: 24px; }
-  .step-top .icon { width: 18px; }
-  .process-grid h3 { font-size: 29px; margin-top: 19px; }
-  .process-grid p { max-width: 100%; margin-top: 11px; font-size: 15px; }
-  .step-note { padding-top: 16px; }
-  .process-quote { gap: 16px; padding-top: 28px; margin-top: 42px; }
-  .quote-mark { font-size: 59px; }
-  .process-quote p { font-size: 19px; }
   .clinic-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 43px; }
   .clinic-copy h2, .about-grid h2 { margin-top: 25px; }
   .clinic-paper { padding: 29px; margin: 4px 4px 0; }
@@ -338,7 +353,5 @@ a.verdura-phone { cursor: zoom-in; }
 @media print {
   .site-header, .site-footer, .hero-actions, .hero-foot, .skip-link { display: none; }
   .section-space { padding-block: 30px; }
-  .process-section { color: var(--ink); background: var(--paper); }
-  .process-section p, .process-section h2 span, .step-note, .process-section .eyebrow { color: var(--muted); }
-  .process-grid, .service, .clinic-paper { break-inside: avoid; }
+  .help-cards, .service, .clinic-paper { break-inside: avoid; }
 }

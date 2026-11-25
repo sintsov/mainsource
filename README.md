@@ -57,11 +57,12 @@ The build renders real HTML for each page, with page-specific titles, descriptio
 
 ```text
 src/config.ts                 Company/contact/legal values, route metadata, URL helpers
-src/pages/Home.tsx            Homepage copy and sections
+src/pages/Home.tsx            Shared bilingual homepage layout
+src/home-copy.ts              English and Montenegrin homepage copy
 src/pages/Legal.tsx           Privacy Policy text and last-updated date
 src/components/              Header, footer and inline icons
 src/styles.css               Typography, design tokens and responsive styles
-src/fonts.css                Local Latin variable-font definitions
+src/fonts.css                Self-hosted Latin and Latin Extended variable fonts
 src/entry-client.tsx          Stylesheet imports and browser hydration
 src/entry-server.tsx          Build-time React rendering
 scripts/generate-assets.mjs   Derived logo, icon and social assets
@@ -75,14 +76,14 @@ public/                      Static assets copied into the build
 Production output includes:
 
 - `dist/index.html` → `/`
-- `dist/work/verdura/index.html` → `/work/verdura/` (linked from `/#work`)
+- `dist/work/verdura/index.html` → `/work/verdura/` (direct case URL; the full story also appears at `/#work`)
 - `dist/privacy/index.html` → `/privacy/`
 - `dist/404.html` → the custom missing-page response
 - Bundled CSS, JavaScript, self-hosted fonts and generated images
 - `sitemap.xml`, `robots.txt`, `.nojekyll` and `site-build.json`
 - `CNAME` only when `CUSTOM_DOMAIN` is set
 
-The English-language site has three content routes: home, the Verdura case study, and the Privacy Policy. The removed `/terms/` and `/data-deletion/` URLs return 404 and are excluded from the sitemap. The footer has no social link or placeholder.
+English at `/` and Montenegrin Latin (`cnr`) at `/cnr/` each have a homepage, `work/verdura/` and `privacy/`. Each content page has its own canonical and reciprocal `en`/`cnr`/`x-default` alternates. The header switch uses ordinary URLs (including active section fragments in browsers with CSS `:has()`); there is no language detection, redirect, cookie or storage. Both `404.html` and `cnr/404.html` are noindex. GitHub Pages has one site-wide error document, with a language link to the translated version. The removed `/terms/` and `/data-deletion/` URLs return 404 and are excluded from the sitemap. The footer has no social link or placeholder.
 
 All routes and asset links incorporate `BASE_PATH`. The temporary `.server/` bundle is used only during prerendering and removed afterward. Publish **only `dist/`**; no Node.js server is needed in production. Never edit generated files in `dist/` as the next build replaces them.
 
@@ -95,16 +96,16 @@ Most operational values live in **`src/config.ts`**:
 | Value | What to set |
 | --- | --- |
 | `company.email` | `hello@mainsource.me`; updates contact and Privacy Policy email links. |
-| `company.whatsappNumber` | Optional international-format digits only, including country code, without `+`, spaces or punctuation. An empty string hides WhatsApp. |
+| `company.whatsappNumber` | International digits for the `wa.me` link (`38268142091`); `whatsappDisplay` is the public formatted number `+382 68 142 091`. |
 | `company.location` | `Tivat, Montenegro`; displayed as “Based in Tivat, Montenegro” in Hero, About and Contact, including on mobile. |
 | `company.legal` | Footer records: `MAINSOURCE DOO`, `PIB: 03448762`, `Reg. No: 51042801`, and `Budva, Montenegro`. The footer location is intentionally separate from the operating location in Tivat; no street address is implied. |
 | `routes` | Page titles and descriptions used by prerendering. |
 
-Edit the homepage’s services, process, workshop and company copy in `src/pages/Home.tsx`. Update navigation in `src/components/Header.tsx`, footer content in `src/components/Footer.tsx`, and visual styles in `src/styles.css`. If rebranding, also review hard-coded brand text in components and `scripts/prerender.mjs`; changing `company.name` alone is not a complete rebrand.
+Edit the homepage text in `src/home-copy.ts` and its shared layout in `src/pages/Home.tsx`. How we help replaces the old process list; the legacy `#how-we-work` anchor still resolves. `src/components/Community.tsx` provides the owner-supplied workshop text and a link to the clean Instagram reel in both languages. The official `/embed/` frame is mounted only after the visitor explicitly chooses to load it and can be closed; no Meta script, image, preconnect or iframe is present on initial load. With JavaScript disabled, only the direct link is shown. The public embed was checked on 2026-11-25; availability can change. No event media is republished. Update navigation in `src/components/Header.tsx`, footer content in `src/components/Footer.tsx`, and visual styles in `src/styles.css`. If rebranding, also review hard-coded brand text in components and `scripts/prerender.mjs`; changing `company.name` alone is not a complete rebrand.
 
 ### Verdura online case study and imagery
 
-The **Featured project** section at `/#work` shows the full project. Its “Project permalink” opens the standalone version at `/work/verdura/`. Both render `src/components/VerduraFeature.tsx`, including the public [App Store listing](https://apps.apple.com/ru/app/verdura-online/id6816469055) and [Google Play listing](https://play.google.com/store/apps/details?id=online.verdura.app); neither view connects to an ordering backend. Keep the supplied Apple storefront URL; the listings do not establish availability in every country.
+**Success Stories** at `/#work` and **Priče o uspjehu** at `/cnr/#work` show the full project with both store links. The standalone versions remain directly accessible without a project-page link on either homepage. Both render `src/components/VerduraFeature.tsx`, including the public [App Store listing](https://apps.apple.com/ru/app/verdura-online/id6816469055) and [Google Play listing](https://play.google.com/store/apps/details?id=online.verdura.app); neither view connects to an ordering backend. Keep the supplied Apple storefront URL; the listings do not establish availability in every country.
 
 `src/components/VerduraScreens.tsx` frames two genuine English demo screens from Verdura source `651640600084`. `public/assets/verdura-{catalogue,basket}-{375,750}.webp` are responsive portrait crops, not native store screenshots. The product imagery in these screens is recorded as CC0 in Verdura’s `assets/SOURCES.md`: [hero (Sven Scheuermeier)](https://commons.wikimedia.org/wiki/File:Fresh_Vegetable_Produce_(Unsplash).jpg), [potatoes (Pxhere)](https://commons.wikimedia.org/wiki/File:Picture_of_many_potatoes.jpg) and [tomatoes (Ivan Timov)](https://commons.wikimedia.org/wiki/File:Healthy_Vegetables_(Unsplash).jpg).
 
@@ -204,7 +205,7 @@ The configured public domain is `mainsource.me`. The steps below also apply if y
 - [ ] Confirm rights to the supplied logo and accuracy of the public company/service/experience statements.
 - [ ] Verify domain ownership, intended canonical hostname and all three build variables.
 - [ ] Confirm the contact mailbox is active, monitored and receiving mail; test `mailto:` links with a configured email client.
-- [ ] Enable WhatsApp only for an approved working number; leave it empty to hide the button.
+- [ ] Verify the WhatsApp contact number and localized links without sending test messages. Check the opt-in Community player and its direct fallback.
 - [ ] Review the current Privacy Policy, update date and company records for accuracy, keeping the Tivat operating location separate from the Budva footer location.
 - [ ] Run `npm ci`, install Playwright Chromium, and run `npm run check` for the intended deployment path.
 - [ ] Inspect desktop and mobile layouts, keyboard focus/navigation, mobile menu, reduced-motion behavior, and content with JavaScript disabled.

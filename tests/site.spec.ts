@@ -36,7 +36,7 @@ const test = base.extend<{ runtimeChecks: RuntimeChecks }>({
 
 const legalPages = fixtures.pages.filter((page) => page.route === '/privacy')
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
-const isPhone = (page: Page) => (page.viewportSize()?.width ?? 1440) < 960
+const isPhone = (page: Page) => (page.viewportSize()?.width ?? 1440) < 1200
 
 function headingPattern(heading: string) {
   // JSX <br> and adjacent spans need not introduce whitespace in textContent.
@@ -110,7 +110,7 @@ for (const expected of fixtures.pages) {
     for (const content of expected.content) {
       await expect(page.getByRole('main')).toContainText(headingPattern(content))
     }
-    if (expected.route !== '/404') {
+    if (!expected.route.endsWith('/404')) {
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${build.siteUrl}${expected.path}`)
       await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `${build.siteUrl}${expected.path}`)
     } else {
@@ -125,8 +125,9 @@ for (const expected of fixtures.pages) {
     })
     expect([...new Set(subjects)].sort()).toEqual([...expected.subjects].sort())
     await expect(page.getByRole('link', { name: /linkedin|terms of use|data deletion/i })).toHaveCount(0)
-    await expect(page.locator('.footer-company p')).toHaveText(fixtures.footer)
-    await expect(page.getByRole('navigation', { name: 'Legal links' }).getByRole('link')).toHaveCount(1)
+    await expect(page.locator('html')).toHaveAttribute('lang', expected.locale)
+    await expect(page.locator('.footer-company p')).toHaveText(expected.locale === 'en' ? fixtures.footer : fixtures.footerCnr)
+    await expect(page.getByRole('navigation', { name: expected.locale === 'en' ? 'Legal links' : 'Pravne informacije' }).getByRole('link')).toHaveCount(1)
     await expect(page.getByRole('contentinfo')).not.toContainText('Tivat')
     await expect(page.locator('.legal-notice, .company-details')).toHaveCount(0)
     if (expected.route === '/') {
@@ -169,6 +170,13 @@ test('unknown nested URLs return a real 404 with a working home link', async ({ 
   await page.getByRole('link', { name: 'Back to MainSource' }).click()
   await expect(page).toHaveURL(localUrl())
   await expect(page.locator('#root')).toHaveAttribute('data-route', '/')
+
+  const missingCnr = localUrl('cnr/not-a-real-route/')
+  runtimeChecks.expected404s.add(missingCnr)
+  expect((await page.goto(missingCnr))?.status()).toBe(404)
+  await expect(page.locator('html')).toHaveAttribute('lang','cnr')
+  await expect(page.getByRole('heading',{ level: 1 })).toHaveText('Ova stranica ne postoji.')
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content',/noindex/)
 
   if (build.basePath !== '/') {
     const outsidePrefix = await request.get(`${serverOrigin}/privacy/`)
@@ -280,14 +288,12 @@ test.describe('progressive enhancement without JavaScript', () => {
       await expect(listings.getByRole('link', { name: 'View on Google Play' })).toHaveAttribute('href', 'https://play.google.com/store/apps/details?id=online.verdura.app')
     }
     await assertFeature(2)
-    const permalink = page.locator('#work').getByRole('link', { name: 'Project permalink' })
-    await expect(permalink).toHaveAttribute('href', `${build.basePath}work/verdura/`)
-    await permalink.focus()
-    await page.keyboard.press('Enter')
-    await expect(page).toHaveURL(localUrl('work/verdura/'))
+    await expect(page.locator('a').filter({ hasText: 'Project permalink' })).toHaveCount(0)
+    await expect(page.locator(`a[href="${build.basePath}work/verdura/"]`)).toHaveCount(0)
+    await visit(page, 'work/verdura/')
     expect((await page.reload())?.status()).toBe(200)
     await assertFeature(1)
-    await page.getByRole('link', { name: 'Back to the featured project' }).focus()
+    await page.getByRole('link', { name: 'Back to Success Stories' }).focus()
     await page.keyboard.press('Enter')
     await assertAnchorDestination(page, 'work')
   })
@@ -331,6 +337,56 @@ test.describe('progressive enhancement without JavaScript', () => {
     }
   })
 })
+
+test.describe('native language links', () => {
+  test.use({ javaScriptEnabled: false, locale: 'sr-Latn-ME' })
+  test('English is the default and both languages keep page and section without scripts', async ({ page }) => {
+    await visit(page)
+    await expect(page.locator('html')).toHaveAttribute('lang','en')
+    for (const path of ['#work','#community','#contact','#how-we-help','privacy/','work/verdura/']) {
+      // A fragment-only navigation is same-document, so it has no HTTP response.
+      await page.goto(localUrl(path))
+      const switchTo = page.getByRole('navigation', { name: 'Language' }).getByRole('link', { name: 'Crnogorski' })
+      await expect(switchTo).toHaveAttribute('href', `${build.basePath}cnr/${path}`)
+      await switchTo.focus(); await page.keyboard.press('Enter')
+      await expect(page).toHaveURL(localUrl(`cnr/${path}`)); await expect(page.locator('html')).toHaveAttribute('lang','cnr')
+      const back = page.getByRole('navigation', { name: 'Jezik' }).getByRole('link', { name: 'EN',exact:true })
+      await expect(back).toHaveAttribute('href', `${build.basePath}${path}`)
+      if (path === '#community') {
+        await expect(page.getByRole('button', { name: 'Učitajte Instagram snimak' })).toHaveCount(0)
+        await expect(page.locator('#community a')).toHaveAttribute('href','https://www.instagram.com/reel/Df9137kqNFz/')
+      }
+      await back.focus(); await page.keyboard.press('Enter'); await expect(page).toHaveURL(localUrl(path))
+    }
+  })
+})
+
+for (const lang of ['en','cnr'] as const) {
+  test(`${lang}: success stories, contact and opt-in community player`, async ({ page, context }) => {
+    const requests: string[] = []
+    await context.route(/^https?:\/\//, route => {
+      if (new URL(route.request().url()).origin === serverOrigin) return route.continue()
+      requests.push(route.request().url()); return route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Offline link check</title>' })
+    })
+    await visit(page, lang === 'en' ? '' : 'cnr/')
+    const work = page.getByRole('region', { name: lang === 'en' ? 'Success Stories' : 'Priče o uspjehu' })
+    await expect(work.getByRole('heading',{name:'Verdura online'})).toBeVisible()
+    await expect(work.locator('a[href^="https://apps.apple.com/"]')).toHaveAttribute('href','https://apps.apple.com/ru/app/verdura-online/id6816469055')
+    await expect(work.locator('a[href^="https://play.google.com/"]')).toHaveAttribute('href','https://play.google.com/store/apps/details?id=online.verdura.app')
+    await expect(page.locator(`a[href="${build.basePath}${lang === 'cnr' ? 'cnr/' : ''}work/verdura/"]`)).toHaveCount(0)
+    await expect(page.locator('body')).not.toContainText(/Featured project|Project permalink/i)
+    await expect(page.locator('.help-cards article')).toHaveCount(3)
+    await expect(page.locator('#contact .whatsapp-link')).toHaveText(/\+382 68 142 091/)
+    await expect(page.locator('#contact .whatsapp-link')).toHaveAttribute('href','https://wa.me/38268142091')
+    const reel = 'https://www.instagram.com/reel/Df9137kqNFz/'
+    await expect(page.locator('#community a')).toHaveAttribute('href',reel)
+    const toggle = page.locator('#community button'); await toggle.scrollIntoViewIfNeeded(); await expect(toggle).toBeVisible()
+    await expect(page.locator('iframe')).toHaveCount(0); expect(requests).toEqual([])
+    await toggle.focus(); await page.keyboard.press('Enter'); await expect(page.locator('iframe')).toHaveAttribute('src', reel+'embed/')
+    await expect.poll(() => requests).toEqual([reel+'embed/'])
+    await page.keyboard.press('Enter'); await expect(page.locator('iframe')).toHaveCount(0)
+  })
+}
 
 test('reduced motion preserves content and layout without animated reveals or smooth scrolling', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })

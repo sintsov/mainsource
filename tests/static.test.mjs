@@ -15,7 +15,7 @@ const documents = fixtures.pages.map((page) => ({
   html: readFileSync(join(dist, page.file), 'utf8'),
   url: new URL(page.path, siteUrl),
 }))
-const publicPages = documents.filter((page) => page.route !== '/404')
+const publicPages = documents.filter((page) => !page.route.endsWith('/404'))
 
 function decode(value) {
   const entities = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' }
@@ -92,7 +92,7 @@ test('deployment manifest describes a normalized public origin and built prefix'
 for (const page of documents) {
   test(`${page.route}: complete prerendered content and company details`, () => {
     assert.match(page.html, /^<!doctype html>/i)
-    assert.equal(tags(page.html, 'html')[0]?.attributes.lang, 'en')
+    assert.equal(tags(page.html, 'html')[0]?.attributes.lang, page.locale)
     assert.equal(tags(page.html, 'main').length, 1)
     assert.equal(tags(page.html, 'h1').length, 1)
     assert.ok(tags(page.html, 'div').some(({ attributes }) => attributes.id === 'root' && attributes['data-route'] === page.route))
@@ -100,8 +100,8 @@ for (const page of documents) {
     assert.equal(text(h1?.[1] ?? ''), page.heading)
     const content = text(page.html)
     for (const expected of page.content) assert.ok(content.includes(expected), `Missing prerendered content: ${expected}`)
-    for (const detail of Object.values(company.legal)) assert.ok(content.includes(detail), `Missing configured legal detail: ${detail}`)
-    for (const line of fixtures.footer) assert.ok(content.includes(line), `Missing footer line: ${line}`)
+    for (const detail of [company.legal.entityName, company.legal.registrationNumber, company.legal.taxNumber]) assert.ok(content.includes(detail), `Missing configured legal detail: ${detail}`)
+    for (const line of page.locale === 'en' ? fixtures.footer : fixtures.footerCnr) assert.ok(content.includes(line), `Missing footer line: ${line}`)
     assert.doesNotMatch(content, /Terms of Use|Data Deletion|LinkedIn|Draft legal|details pending|to be added/)
     // No unresolved build/template placeholders may reach the public site.
     assert.doesNotMatch(page.html, /<!--\s*(?:app-html|\/?site-head)\s*-->|%[A-Z][A-Z_]+%|__VITE_[\w_]*__|\[object Object\]/)
@@ -123,13 +123,18 @@ for (const page of documents) {
     assert.equal(decode(titles[0][1]), page.title)
     assert.ok(meta(page.html, 'description').length > 50)
     assert.match(meta(page.html, 'viewport'), /width=device-width/)
-    if (page.route === '/404') {
+    if (page.route.endsWith('/404')) {
       assert.match(meta(page.html, 'robots'), /\bnoindex\b/)
       assert.deepEqual(canonical(page.html), [], 'Do not advertise an error page as canonical')
       assert.equal(tags(page.html, 'meta').filter(({ attributes }) => attributes.property?.startsWith('og:')).length, 0)
       return
     }
     assert.deepEqual(canonical(page.html), [page.url.href])
+    const neutral = page.path.replace(/^cnr\//, '')
+    const alternates = tags(page.html,'link').map(t => t.attributes).filter(a => a.rel === 'alternate')
+    assert.equal(alternates.length, 3)
+    assert.deepEqual(Object.fromEntries(alternates.map(a => [a.hreflang,a.href])), { en: siteUrl + neutral, cnr: siteUrl + 'cnr/' + neutral, 'x-default': siteUrl + neutral })
+    assert.equal(meta(page.html,'og:locale'), page.locale === 'en' ? 'en_GB' : 'cnr_ME')
     assert.equal(meta(page.html, 'robots'), 'index, follow')
     assert.equal(meta(page.html, 'og:type'), 'website')
     assert.equal(meta(page.html, 'og:site_name'), 'MainSource')
