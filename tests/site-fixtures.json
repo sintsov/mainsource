@@ -1,5 +1,5 @@
 {
-  "homeSections": ["what-we-do", "how-we-work", "digital-clinic", "about", "contact"],
+  "homeSections": ["what-we-do", "work", "how-we-work", "digital-clinic", "about", "contact"],
   "footer": ["© MAINSOURCE DOO", "PIB: 03448762 · Reg. No: 51042801", "Budva, Montenegro"],
   "pages": [
     {
@@ -8,8 +8,17 @@
       "file": "index.html",
       "title": "MainSource — AI & Software Solutions in Montenegro",
       "heading": "Technology for real business problems.",
-      "content": ["AI & Automation", "Digital Products", "Business Tools", "Technology Strategy", "Understand", "Explore", "Build", "Technology for Local Business.", "20 years of experience", "Based in Tivat, Montenegro"],
+      "content": ["AI & Automation", "Digital Products", "Business Tools", "Technology Strategy", "Verdura online", "Simplifying grocery ordering for a local business.", "View on the App Store", "View on Google Play", "Understand", "Explore", "Build", "Technology for Local Business.", "20 years of experience", "Based in Tivat, Montenegro"],
       "subjects": ["Let’s discuss a business problem", "Workshop or Digital Clinic enquiry"]
+    },
+    {
+      "route": "/work/verdura",
+      "path": "work/verdura/",
+      "file": "work/verdura/index.html",
+      "title": "Verdura online — Grocery Ordering App | MainSource",
+      "heading": "Verdura online",
+      "content": ["Local retail · Digital product · AI-assisted development", "Simplifying grocery ordering for a local business.", "pay on arrival", "Demo screens · Illustrative prices", "The goal wasn't to transform the entire business. It was to make ordering easier for customers while keeping the process familiar for the shop owners."],
+      "subjects": []
     },
     {
       "route": "/privacy",

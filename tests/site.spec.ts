@@ -34,7 +34,7 @@ const test = base.extend<{ runtimeChecks: RuntimeChecks }>({
   }, { auto: true }],
 })
 
-const legalPages = fixtures.pages.filter((page) => !['/', '/404'].includes(page.route))
+const legalPages = fixtures.pages.filter((page) => page.route === '/privacy')
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
 const isPhone = (page: Page) => (page.viewportSize()?.width ?? 1440) < 960
 
@@ -70,6 +70,9 @@ async function assertNoOverflow(page: Page) {
 async function loadedImages(page: Page) {
   // Force an instant scroll so Playwright does not wait for an in-flight smooth
   // anchor scroll to stabilize in a JavaScript-disabled browser context.
+  for (const image of await page.locator('img[loading="lazy"]').all()) {
+    await image.evaluate((img) => img.scrollIntoView({ behavior: 'instant', block: 'center' }))
+  }
   await page.getByRole('contentinfo').evaluate((footer) => footer.scrollIntoView({ behavior: 'instant', block: 'end' }))
   await expect.poll(() => page.locator('img').evaluateAll((images) => images
     .filter((image) => !(image as HTMLImageElement).complete || (image as HTMLImageElement).naturalWidth === 0)
@@ -263,6 +266,31 @@ test('footer privacy link, return navigation and hard refresh work without routi
 
 test.describe('progressive enhancement without JavaScript', () => {
   test.use({ javaScriptEnabled: false })
+
+  test('the homepage project and its standalone permalink offer the same screens and store links', async ({ page }) => {
+    await visit(page, '#work')
+    const feature = page.getByRole('article', { name: 'Verdura online' })
+    const assertFeature = async (level: 1 | 2) => {
+      await expect(feature.getByRole('heading', { level, name: 'Verdura online' })).toBeVisible()
+      for (const screen of ['catalogue', 'basket']) {
+        await expect(feature.getByRole('link', { name: `Enlarge the Verdura online ${screen} screen` })).toHaveAttribute('href', `${build.basePath}assets/verdura-${screen}-750.webp`)
+      }
+      const listings = feature.getByRole('navigation', { name: 'Public app listings' })
+      await expect(listings.getByRole('link', { name: 'View on the App Store' })).toHaveAttribute('href', 'https://apps.apple.com/ru/app/verdura-online/id6816469055')
+      await expect(listings.getByRole('link', { name: 'View on Google Play' })).toHaveAttribute('href', 'https://play.google.com/store/apps/details?id=online.verdura.app')
+    }
+    await assertFeature(2)
+    const permalink = page.locator('#work').getByRole('link', { name: 'Project permalink' })
+    await expect(permalink).toHaveAttribute('href', `${build.basePath}work/verdura/`)
+    await permalink.focus()
+    await page.keyboard.press('Enter')
+    await expect(page).toHaveURL(localUrl('work/verdura/'))
+    expect((await page.reload())?.status()).toBe(200)
+    await assertFeature(1)
+    await page.getByRole('link', { name: 'Back to the featured project' }).focus()
+    await page.keyboard.press('Enter')
+    await assertAnchorDestination(page, 'work')
+  })
 
   test('prerendered home, contact, native navigation and legal pages remain usable', async ({ page }) => {
     await visit(page)

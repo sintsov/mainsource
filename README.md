@@ -75,13 +75,14 @@ public/                      Static assets copied into the build
 Production output includes:
 
 - `dist/index.html` → `/`
+- `dist/work/verdura/index.html` → `/work/verdura/` (linked from `/#work`)
 - `dist/privacy/index.html` → `/privacy/`
 - `dist/404.html` → the custom missing-page response
 - Bundled CSS, JavaScript, self-hosted fonts and generated images
 - `sitemap.xml`, `robots.txt`, `.nojekyll` and `site-build.json`
 - `CNAME` only when `CUSTOM_DOMAIN` is set
 
-Only the homepage and Privacy Policy are public content routes. The removed `/terms/` and `/data-deletion/` URLs return 404 and are excluded from the sitemap. The footer has no social link or placeholder.
+The English-language site has three content routes: home, the Verdura case study, and the Privacy Policy. The removed `/terms/` and `/data-deletion/` URLs return 404 and are excluded from the sitemap. The footer has no social link or placeholder.
 
 All routes and asset links incorporate `BASE_PATH`. The temporary `.server/` bundle is used only during prerendering and removed afterward. Publish **only `dist/`**; no Node.js server is needed in production. Never edit generated files in `dist/` as the next build replaces them.
 
@@ -100,6 +101,14 @@ Most operational values live in **`src/config.ts`**:
 | `routes` | Page titles and descriptions used by prerendering. |
 
 Edit the homepage’s services, process, workshop and company copy in `src/pages/Home.tsx`. Update navigation in `src/components/Header.tsx`, footer content in `src/components/Footer.tsx`, and visual styles in `src/styles.css`. If rebranding, also review hard-coded brand text in components and `scripts/prerender.mjs`; changing `company.name` alone is not a complete rebrand.
+
+### Verdura online case study and imagery
+
+The **Featured project** section at `/#work` shows the full project. Its “Project permalink” opens the standalone version at `/work/verdura/`. Both render `src/components/VerduraFeature.tsx`, including the public [App Store listing](https://apps.apple.com/ru/app/verdura-online/id6816469055) and [Google Play listing](https://play.google.com/store/apps/details?id=online.verdura.app); neither view connects to an ordering backend. Keep the supplied Apple storefront URL; the listings do not establish availability in every country.
+
+`src/components/VerduraScreens.tsx` frames two genuine English demo screens from Verdura source `651640600084`. `public/assets/verdura-{catalogue,basket}-{375,750}.webp` are responsive portrait crops, not native store screenshots. The product imagery in these screens is recorded as CC0 in Verdura’s `assets/SOURCES.md`: [hero (Sven Scheuermeier)](https://commons.wikimedia.org/wiki/File:Fresh_Vegetable_Produce_(Unsplash).jpg), [potatoes (Pxhere)](https://commons.wikimedia.org/wiki/File:Picture_of_many_potatoes.jpg) and [tomatoes (Ivan Timov)](https://commons.wikimedia.org/wiki/File:Healthy_Vegetables_(Unsplash).jpg).
+
+To refresh the screens, render an isolated app copy with dotenv disabled, `EXPO_PUBLIC_APP_MODE=demo`, `EXPO_PUBLIC_CATALOG_SOURCE=local`, an empty backend endpoint, and a fresh browser profile serving only local static assets. Use only the demo catalogue and basket; do not enter customer information or submit an order. Crop below the proprietary header, keep the demo captions, and do not reuse store-submission or reference artwork.
 
 ### Privacy Policy and company records
 

@@ -4,6 +4,7 @@ import { Icon } from './Icon'
 
 const links = [
   ['What we do', 'what-we-do'],
+  ['Featured project', 'work'],
   ['How we work', 'how-we-work'],
   ['Digital Clinic', 'digital-clinic'],
   ['About', 'about'],

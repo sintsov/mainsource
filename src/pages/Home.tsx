@@ -1,5 +1,6 @@
 import { company, emailHref, sectionHref } from '../config'
 import { Icon } from '../components/Icon'
+import { VerduraFeature } from '../components/VerduraFeature'
 
 const services = [
   { icon: 'automation', title: 'AI & Automation', text: 'Identify repetitive or inefficient business processes and use AI and automation to improve them.', example: 'Less repetitive work. More time for what matters.' },
@@ -51,6 +52,10 @@ export function Home() {
             </article>)}
           </div>
         </div>
+      </section>
+
+      <section id="work" className="featured-project container" aria-label="Featured project">
+        <VerduraFeature placement="home" />
       </section>
 
       <section id="how-we-work" className="process-section section-space" aria-labelledby="process-title">

@@ -18,6 +18,10 @@ export const routes = {
     title: 'MainSource — AI & Software Solutions in Montenegro',
     description: 'Technology for real business problems. MainSource builds practical AI solutions, digital products and business tools for local and international businesses.',
   },
+  '/work/verdura': {
+    title: 'Verdura online — Grocery Ordering App | MainSource',
+    description: 'Simplifying grocery ordering for a local business. Explore Verdura online, a grocery delivery app for a shop in Tivat, and view its public app listings.',
+  },
   '/privacy': {
     title: 'Privacy Policy — MainSource',
     description: 'How MainSource handles information voluntarily provided through direct contact, and how this static website works without analytics or tracking cookies.',
