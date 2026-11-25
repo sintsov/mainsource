@@ -343,7 +343,7 @@ test.describe('native language links', () => {
   test('English is the default and both languages keep page and section without scripts', async ({ page }) => {
     await visit(page)
     await expect(page.locator('html')).toHaveAttribute('lang','en')
-    for (const path of ['#work','#community','#contact','#how-we-help','privacy/','work/verdura/']) {
+    for (const path of ['#work','#community','#contact','#how-we-help','#how-we-work','privacy/','work/verdura/']) {
       // A fragment-only navigation is same-document, so it has no HTTP response.
       await page.goto(localUrl(path))
       const switchTo = page.getByRole('navigation', { name: 'Language' }).getByRole('link', { name: 'Crnogorski' })
@@ -375,7 +375,13 @@ for (const lang of ['en','cnr'] as const) {
     await expect(work.locator('a[href^="https://play.google.com/"]')).toHaveAttribute('href','https://play.google.com/store/apps/details?id=online.verdura.app')
     await expect(page.locator(`a[href="${build.basePath}${lang === 'cnr' ? 'cnr/' : ''}work/verdura/"]`)).toHaveCount(0)
     await expect(page.locator('body')).not.toContainText(/Featured project|Project permalink/i)
-    await expect(page.locator('.help-cards article')).toHaveCount(3)
+    const help = page.locator('#how-we-work > #how-we-help')
+    // Check rendered text too: the previous numeric prefix was aria-hidden.
+    await expect(help.getByRole('heading', { level: 2 })).toHaveText(lang === 'en' ? 'How we help' : 'Kako pomažemo')
+    await expect(help.locator('article h3')).toHaveText(lang === 'en' ? ['Advisory', 'Discovery', 'Delivery'] : ['Savjetovanje', 'Istraživanje', 'Realizacija'])
+    await expect(help.locator('article p')).toHaveText(lang === 'en'
+      ? ['Understand and decide', 'Explore and validate', 'Build and implement']
+      : ['Razjasnite potrebe i donesite odluku', 'Istražite mogućnosti i provjerite ideju', 'Razvijte rješenje i primijenite ga'])
     await expect(page.locator('#contact .whatsapp-link')).toHaveText(/\+382 68 142 091/)
     await expect(page.locator('#contact .whatsapp-link')).toHaveAttribute('href','https://wa.me/38268142091')
     const reel = 'https://www.instagram.com/reel/Df9137kqNFz/'

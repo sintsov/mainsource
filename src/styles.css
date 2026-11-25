@@ -133,13 +133,14 @@ a.verdura-phone { cursor: zoom-in; }
   .case-foot { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
-.help-section { padding-block: clamp(32px, 4vw, 56px); border-bottom: 1px solid var(--line); }
-.help-section h2 { color: var(--muted); }
-.help-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 15px; }
-.help-cards article { padding: 19px 20px; border-radius: 10px; background: var(--soft); }
-.help-cards .icon { width: 19px; height: 19px; color: var(--muted); }
-.help-cards h3 { font-size: 18px; line-height: 1.35; letter-spacing: -.025em; margin-top: 12px; font-weight: 650; }
-.help-cards p { color: var(--muted); margin-top: 5px; font-size: 14px; line-height: 1.55; }
+.help-section { border-bottom: 1px solid var(--line); }
+.help-section .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 639px) {
+  .help-section .services-grid { grid-template-columns: 1fr; gap: 24px; }
+  .help-section .service { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 16px; }
+  .help-section .service-icon { grid-row: span 2; margin: 0; }
+  .help-section .service h3 { margin: 0; }
+}
 .community-section { background: var(--soft); border-block: 1px solid var(--line); }
 .community-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; margin-top: 24px; }
 .community-actions .text-link, .whatsapp-link { min-height: 44px; }
@@ -147,7 +148,6 @@ a.verdura-phone { cursor: zoom-in; }
 .reel-button:hover { color: var(--paper); background: var(--ink); }
 .reel-note { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 12px; }
 .community-player { display: block; width: min(100%, 420px); height: 580px; border: 0; margin-top: 20px; background: var(--paper); }
-@media (max-width: 560px) { .help-cards { grid-template-columns: 1fr; gap: 8px; } .help-cards article { display: grid; grid-template-columns: 22px 1fr; column-gap: 12px; align-items: center; padding: 14px 16px; } .help-cards h3 { margin: 0; } .help-cards p { grid-column: 2; margin-top: 2px; } }
 
 .language-switch { display: flex; align-items: center; flex-shrink: 0; gap: 6px; font-size: 12px; white-space: nowrap; }
 .language-switch > span + span { border-left: 1px solid var(--line); padding-left: 6px; }
@@ -353,5 +353,5 @@ html:has(#contact:target) [href$="#contact"].lang-fragment { display: inline-fle
 @media print {
   .site-header, .site-footer, .hero-actions, .hero-foot, .skip-link { display: none; }
   .section-space { padding-block: 30px; }
-  .help-cards, .service, .clinic-paper { break-inside: avoid; }
+  .service, .clinic-paper { break-inside: avoid; }
 }

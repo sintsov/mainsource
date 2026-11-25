@@ -93,19 +93,18 @@ export function Home({ locale }: { locale: Locale }) {
         </div>
       </section>
       <div id="how-we-work">
-        <section id="how-we-help" className="help-section container" aria-labelledby="help-title">
-          <h2 id="help-title" className="eyebrow">
-            <span aria-hidden="true">02 — </span>
-            {help.label}
-          </h2>
-          <div className="help-cards">
-            {help.items.map(([icon, title, outcome]) => (
-              <article key={icon}>
-                <Icon name={icon} />
-                <h3>{title}</h3>
-                <p>{outcome}</p>
-              </article>
-            ))}
+        <section id="how-we-help" className="help-section section-space" aria-labelledby="help-title">
+          <div className="container">
+            <h2 id="help-title" data-reveal>{help.label}</h2>
+            <div className="services-grid">
+              {help.items.map(([icon, title, outcome]) => (
+                <article key={icon} className="service" data-reveal>
+                  <span className="service-icon"><Icon name={icon} /></span>
+                  <h3>{title}</h3>
+                  <p>{outcome}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
       </div>
