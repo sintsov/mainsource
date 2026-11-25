@@ -79,6 +79,7 @@ test('deployment manifest describes a normalized public origin and built prefix'
   assert.match(basePath, /^\/(?:[^/?#]+\/)*$/)
   const site = new URL(siteUrl)
   assert.ok(['https:', 'http:'].includes(site.protocol))
+  if (site.hostname === 'mainsource.me') assert.equal(site.protocol, 'https:', 'All production metadata must use the HTTPS origin, even when Pages supplies HTTP')
   assert.equal(siteUrl, `${site.origin}${basePath}`)
   assert.equal(site.pathname, basePath)
   assert.equal(site.search + site.hash + site.username + site.password, '')

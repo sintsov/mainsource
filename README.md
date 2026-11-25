@@ -149,7 +149,7 @@ Use `.env` locally (ignored by Git) or environment variables when building. Chan
 
 | Variable | Meaning |
 | --- | --- |
-| `SITE_URL` | Public origin only, e.g. `https://OWNER.github.io` or `https://example.com`. No repository path, query, fragment or credentials. Default: `https://mainsource.me`. Use HTTPS for production. |
+| `SITE_URL` | Public origin only, e.g. `https://OWNER.github.io` or `https://example.com`. No repository path, query, fragment or credentials. Default: `https://mainsource.me`. The owned `mainsource.me` hostname is normalized to HTTPS even if Pages reports its legacy HTTP origin; other origins are left configurable. |
 | `BASE_PATH` | `/` for a custom domain/account site, or `/REPOSITORY/` for a GitHub project site. Use a slash-delimited path prefix, not a full URL. Default: `/`. |
 | `CUSTOM_DOMAIN` | Optional bare hostname, without scheme or path. Must match the `SITE_URL` hostname and requires `BASE_PATH=/`. Emits `dist/CNAME`; it does not configure DNS or GitHub Pages. Leave empty for the normal `github.io` URL. |
 

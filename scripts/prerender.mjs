@@ -8,6 +8,9 @@ const site = new URL(env.SITE_URL || 'https://mainsource.me')
 if (!['https:', 'http:'].includes(site.protocol) || site.pathname !== '/' || site.search || site.hash || site.username || site.password) {
   throw new Error('SITE_URL must be a public http(s) origin without a path, query or credentials. Set BASE_PATH separately.')
 }
+// Pages may report its legacy HTTP origin even though the production custom domain is served over HTTPS.
+// Use one public origin for HTML, sitemap, robots and social metadata; keep local/test origins configurable.
+if (site.hostname === 'mainsource.me') site.protocol = 'https:'
 const siteUrl = `${site.origin}${basePath}`
 const publicUrl = (route) => `${siteUrl}${route === '/' ? '' : `${route.slice(1)}/`}`
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character])
