@@ -87,7 +87,7 @@ English at `/` and Montenegrin Latin (`cnr`) at `/cnr/` each have a homepage, `w
 
 All routes and asset links incorporate `BASE_PATH`. The temporary `.server/` bundle is used only during prerendering and removed afterward. Publish **only `dist/`**; no Node.js server is needed in production. Never edit generated files in `dist/` as the next build replaces them.
 
-There is no backend, contact form, account system, analytics, tracking cookie or browser-storage feature. Email links open the visitor’s email application. GitHub Pages may still process technical hosting information such as IP addresses and request logs; “no analytics” does not mean “no data processing.”
+The static application implements no account system, contact form, analytics tag, tracking cookies or persistent browser storage. This is separate from the CDN: on 2026-11-27 the public HTML referenced the Cloudflare Insights beacon, absent from the local build, and returned `NEL`/`Report-To` headers. The sampled HTML responses did not set cookies. This observation does not establish provider settings, logging or retention. Recheck the bilingual privacy wording if the delivery configuration changes.
 
 ## Edit content and contact details
 
@@ -101,7 +101,7 @@ Most operational values live in **`src/config.ts`**:
 | `company.legal` | Footer records: `MAINSOURCE DOO`, `PIB: 03448762`, `Reg. No: 51042801`, and `Budva, Montenegro`. The footer location is intentionally separate from the operating location in Tivat; no street address is implied. |
 | `routes` | Page titles and descriptions used by prerendering. |
 
-Edit the homepage text in `src/home-copy.ts` and its shared layout in `src/pages/Home.tsx`. How we help replaces the old process list; the legacy `#how-we-work` anchor still resolves. `src/components/Community.tsx` provides the owner-supplied workshop text and a link to the clean Instagram reel in both languages. The official `/embed/` frame is mounted only after the visitor explicitly chooses to load it and can be closed; no Meta script, image, preconnect or iframe is present on initial load. With JavaScript disabled, only the direct link is shown. The public embed was checked on 2026-11-25; availability can change. No event media is republished. Update navigation in `src/components/Header.tsx`, footer content in `src/components/Footer.tsx`, and visual styles in `src/styles.css`. If rebranding, also review hard-coded brand text in components and `scripts/prerender.mjs`; changing `company.name` alone is not a complete rebrand.
+Edit the homepage text in `src/home-copy.ts` and its shared layout in `src/pages/Home.tsx`. How we help replaces the old process list; the legacy `#how-we-work` anchor still resolves. `src/components/Community.tsx` provides the owner-supplied workshop text and a link to the clean Instagram reel in both languages. Community uses one owner-supplied 720×1280 H.264/AAC MP4 (~4 MB) for both languages, with native controls, inline playback, `preload="none"` and no autoplay. The poster is an uncropped WebP from the clip’s closing card. The preview server supports MP4 byte ranges. The original Instagram URL is an ordinary outbound link, not a player dependency. Local caption tracks describe supported soundtrack cues; the localized visual description summarizes the workshop scenes and closing title. The BIC Tivat credit stays with the clip. Update navigation in `src/components/Header.tsx`, footer content in `src/components/Footer.tsx`, and visual styles in `src/styles.css`. If rebranding, also review hard-coded brand text in components and `scripts/prerender.mjs`; changing `company.name` alone is not a complete rebrand.
 
 ### Verdura online case study and imagery
 
@@ -113,7 +113,7 @@ To refresh the screens, render an isolated app copy with dotenv disabled, `EXPO_
 
 ### Privacy Policy and company records
 
-`src/pages/Legal.tsx` contains the supplied Privacy Policy, with “Last updated: September 2026”. It describes an informational website without accounts, analytics, advertising cookies or tracking, and direct-contact processing solely to respond to requests. The visible company records are maintained in `src/config.ts`; there are no draft notices or company-detail placeholders.
+`src/pages/Legal.tsx` holds the November 2026 privacy notice in both languages. It distinguishes the website’s own code from Cloudflare delivery and error-reporting headers, explains direct contact and external links, and identifies the workshop video as first-party media. The visible company records are maintained in `src/config.ts`.
 
 Keep the policy, last-updated date and company records accurate when business practices change. This implementation is not a legal compliance certification.
 
@@ -205,7 +205,7 @@ The configured public domain is `mainsource.me`. The steps below also apply if y
 - [ ] Confirm rights to the supplied logo and accuracy of the public company/service/experience statements.
 - [ ] Verify domain ownership, intended canonical hostname and all three build variables.
 - [ ] Confirm the contact mailbox is active, monitored and receiving mail; test `mailto:` links with a configured email client.
-- [ ] Verify the WhatsApp contact number and localized links without sending test messages. Check the opt-in Community player and its direct fallback.
+- [ ] Verify the WhatsApp contact number and localized links without sending test messages. Check the local Community video's poster, native playback, captions and separate outbound link; verify media permissions before publishing.
 - [ ] Review the current Privacy Policy, update date and company records for accuracy, keeping the Tivat operating location separate from the Budva footer location.
 - [ ] Run `npm ci`, install Playwright Chromium, and run `npm run check` for the intended deployment path.
 - [ ] Inspect desktop and mobile layouts, keyboard focus/navigation, mobile menu, reduced-motion behavior, and content with JavaScript disabled.

@@ -24,7 +24,7 @@ export const routes = {
   '/privacy': {
     title: 'Privacy Policy — MainSource',
     description:
-      'How MainSource handles information voluntarily provided through direct contact, and how this static website works without analytics or tracking cookies.',
+      'How MainSource handles direct contact, what the website stores in your browser, and how Cloudflare delivers the public site.',
   },
   '/404': {
     title: 'Page Not Found — MainSource',
@@ -44,7 +44,7 @@ export const routes = {
   '/cnr/privacy': {
     title: 'Politika privatnosti — MainSource',
     description:
-      'Kako MainSource postupa s podacima koje nam sami pošaljete i kako naš informativni sajt radi bez analitike i kolačića za praćenje.',
+      'Kako MainSource postupa kada nam se obratite, šta sajt čuva u pregledaču i kako Cloudflare isporučuje sadržaj javnog sajta.',
   },
   '/cnr/404': {
     title: 'Stranica nije pronađena — MainSource',

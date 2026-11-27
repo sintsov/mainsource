@@ -18,8 +18,13 @@ export function Legal({ locale }: { locale: Locale }) {
         </p>
         <p>
           {me
-            ? 'Ne koristimo korisničke naloge, analitiku, reklamne kolačiće ni tehnologije za praćenje i ne prikupljamo lične podatke putem ovog sajta.'
-            : 'We do not use user accounts, analytics, advertising cookies, or tracking technologies, and we do not collect personal information through this website.'}
+            ? 'Sajt nema korisničke naloge. Kôd sajta koji održava MainSource ne postavlja kolačiće za praćenje niti u pregledaču čuva vaš izbor jezika ili istoriju gledanja snimka.'
+            : 'The site has no user accounts. MainSource’s website code does not set tracking cookies or save your language choice or video playback history in browser storage.'}
+        </p>
+        <p>
+          {me
+            ? 'Cloudflare isporučuje sadržaj javnog sajta. Stranice koje isporučuje uključuju skriptu Cloudflare Insights, a HTTP odgovori sadrže zaglavlja NEL i Report-To koja pregledači mogu koristiti za slanje izvještaja o mrežnim greškama.'
+            : 'The public site is delivered through Cloudflare. The pages it serves include a Cloudflare Insights script and HTTP headers (NEL and Report-To) that browsers can use to send network error reports.'}
         </p>
         <p>
           {me
@@ -31,12 +36,12 @@ export function Legal({ locale }: { locale: Locale }) {
           {me ? 'Za pitanja o privatnosti pišite nam na: ' : 'For privacy-related questions, contact: '}
           <a href={emailHref(me ? 'Pitanje o privatnosti' : 'Privacy request')}>{company.email}</a>
         </p>
-        <p>{me ? 'Posljednje ažuriranje: septembar 2026.' : 'Last updated: September 2026'}</p>
+        <p>{me ? 'Posljednje ažuriranje: novembar 2026.' : 'Last updated: November 2026'}</p>
       </article>
       <aside className="legal-player-note">
         {me
-          ? 'Opcioni Instagram plejer u odjeljku Zajednica uspostavlja vezu s Instagramom samo ako odaberete da učitate snimak.'
-          : 'The optional Instagram player in Community connects to Instagram only if you choose to load the reel.'}
+          ? 'Snimak radionice u odjeljku Zajednica reprodukuje se sa ovog sajta, bez Instagram plejera. Linkovi ka Instagramu, WhatsAppu i prodavnicama aplikacija vode na druge servise.'
+          : 'The Community workshop video plays from this website, not from Instagram. Links to Instagram, WhatsApp and the app stores take you to those services.'}
       </aside>
     </main>
   )

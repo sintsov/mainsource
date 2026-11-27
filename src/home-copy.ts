@@ -51,9 +51,21 @@ export const homeCopy = {
     help: {
       label: 'How we help',
       items: [
-        ['strategy', 'Advisory', 'Understand and decide'],
-        ['bulb', 'Discovery', 'Explore and validate'],
-        ['code', 'Delivery', 'Build and implement'],
+        [
+          'strategy', 'Advisory',
+          'We trace a problem through your current workflow and compare the costs and benefits of each option.',
+          'You get a recommendation on what to change first and what can wait.',
+        ],
+        [
+          'bulb', 'Discovery',
+          'We walk through the job with the people who do it and test a small prototype on realistic examples.',
+          'You get a plan for the first version that spells out what worked and what still needs testing.',
+        ],
+        [
+          'code', 'Delivery',
+          'We build the agreed solution, connect it to the tools you already use and test it with your team.',
+          'We hand over the working tool with instructions so your team can use it independently.',
+        ],
       ],
     },
     clinic: {
@@ -149,9 +161,21 @@ export const homeCopy = {
     help: {
       label: 'Kako pomažemo',
       items: [
-        ['strategy', 'Savjetovanje', 'Razjasnite potrebe i donesite odluku'],
-        ['bulb', 'Istraživanje', 'Istražite mogućnosti i provjerite ideju'],
-        ['code', 'Realizacija', 'Razvijte rješenje i primijenite ga'],
+        [
+          'strategy', 'Savjetovanje',
+          'Zajedno utvrđujemo gdje u radu nastaje problem i poredimo prednosti i nedostatke mogućih rješenja.',
+          'Dobijate preporuku šta prvo promijeniti, a šta može da sačeka.',
+        ],
+        [
+          'bulb', 'Istraživanje',
+          'S ljudima koji obavljaju posao prolazimo kroz postupak i na konkretnim primjerima isprobavamo prototip.',
+          'Dobijate plan prve verzije i pregled onoga što se pokazalo korisnim i što još treba provjeriti.',
+        ],
+        [
+          'code', 'Realizacija',
+          'Razvijamo dogovoreno rješenje, povezujemo ga s alatima koje već koristite i testiramo ga s vašim timom.',
+          'Tim preuzima gotov alat i uputstva za samostalan rad.',
+        ],
       ],
     },
     clinic: {

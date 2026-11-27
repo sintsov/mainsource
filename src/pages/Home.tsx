@@ -94,25 +94,25 @@ export function Home({ locale }: { locale: Locale }) {
       </section>
       <div id="how-we-work">
         <section id="how-we-help" className="help-section section-space" aria-labelledby="help-title">
-          <div className="container">
-            <h2 id="help-title" data-reveal>{help.label}</h2>
+          <div className="container section-heading">
+            <h2 id="help-title" className="eyebrow" data-reveal>{help.label}</h2>
             <div className="services-grid">
-              {help.items.map(([icon, title, outcome]) => (
+              {help.items.map(([icon, title, activity, outcome]) => (
                 <article key={icon} className="service" data-reveal>
                   <span className="service-icon"><Icon name={icon} /></span>
                   <h3>{title}</h3>
-                  <p>{outcome}</p>
+                  <p>{activity} <span className="help-result">{outcome}</span></p>
                 </article>
               ))}
             </div>
           </div>
         </section>
       </div>
-      <section id="work" className="success-stories container" aria-labelledby="stories-label">
-        <p id="stories-label" className="stories-label">
-          {locale === 'en' ? 'Success Stories' : 'Priče o uspjehu'}
-        </p>
-        <VerduraFeature placement="home" locale={locale} />
+      <section id="work" className="success-stories section-space" aria-labelledby="stories-label">
+        <div className="container section-heading">
+          <h2 id="stories-label" className="eyebrow" data-reveal>{locale === 'en' ? 'Success Stories' : 'Priče o uspjehu'}</h2>
+          <VerduraFeature placement="home" locale={locale} />
+        </div>
       </section>
 
       <section id="digital-clinic" className="clinic-section section-space" aria-labelledby="clinic-title">
@@ -218,7 +218,7 @@ export function Home({ locale }: { locale: Locale }) {
               </a>
               <p className="contact-note">{contact.note}</p>
               <a className="text-link whatsapp-link" href={`https://wa.me/${company.whatsappNumber}`} rel="noreferrer">
-                WhatsApp · {company.whatsappDisplay}
+                <Icon name="whatsapp" className="whatsapp-mark" /> WhatsApp · {company.whatsappDisplay}
                 <Icon name="diagonal" />
               </a>
               <p className="contact-place">

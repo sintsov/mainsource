@@ -5,7 +5,7 @@ import { VerduraScreens } from './VerduraScreens'
 export function VerduraFeature({ placement, locale }: { placement: 'home' | 'standalone'; locale: Locale }) {
   const onHome = placement === 'home',
     me = locale === 'cnr'
-  const Heading = onHome ? 'h2' : 'h1'
+  const Heading = onHome ? 'h3' : 'h1'
   return (
     <article className="case-feature" aria-labelledby="verdura-title">
       <header className="case-heading">
