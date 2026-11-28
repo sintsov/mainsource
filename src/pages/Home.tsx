@@ -108,7 +108,7 @@ export function Home({ locale }: { locale: Locale }) {
           </div>
         </section>
       </div>
-      <section id="work" className="success-stories section-space" aria-labelledby="stories-label">
+      <section id="work" className="success-stories" aria-labelledby="stories-label">
         <div className="container section-heading">
           <h2 id="stories-label" className="eyebrow" data-reveal>{locale === 'en' ? 'Success Stories' : 'Priče o uspjehu'}</h2>
           <VerduraFeature placement="home" locale={locale} />

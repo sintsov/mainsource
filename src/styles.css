@@ -106,10 +106,10 @@ h2 { font-size: clamp(34px, 3.6vw, 52px); line-height: 1.14; letter-spacing: -.0
 .service > p { font-size: 14px; line-height: 1.8; color: var(--muted); }
 .service > .service-outcome { font-size: 12px; line-height: 1.65; color: var(--ink); margin-top: auto; padding-top: 29px; max-width: 220px; }
 
-.success-stories .case-feature { column-gap: clamp(20px, 2.4vw, 36px); }
-.success-stories .verdura-stage { gap: clamp(10px, 1vw, 16px); padding: clamp(14px, 1.7vw, 25px); }
-.success-stories .case-title { font-size: clamp(27px, 2.7vw, 38px); letter-spacing: -.045em; }
-.success-stories .case-lead { font-size: clamp(19px, 1.7vw, 25px); }
+.success-stories { padding-block: clamp(40px, 5.5vw, 80px); }
+/* Keep the section label on the left, but give the feature its original full-width grid. */
+.success-stories > .section-heading { row-gap: 20px; }
+.success-stories .case-feature { grid-column: 1 / -1; }
 .help-section .service > p { font-size: 15px; line-height: 1.7; max-width: 44ch; }
 .help-result { display: block; margin-top: .65em; color: var(--ink); }
 .verdura-art { margin: 0; }
@@ -139,9 +139,6 @@ a.verdura-phone { cursor: zoom-in; }
 
 .help-section { border-bottom: 1px solid var(--line); }
 .help-section .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 0; }
-@media (min-width: 721px) and (max-width: 1100px) {
-  .success-stories .case-feature { grid-template-columns: 1fr; grid-template-areas: 'heading' 'art' 'intro' 'foot'; }
-}
 @media (max-width: 959px) {
   .help-section .services-grid { grid-template-columns: 1fr; gap: 24px; }
   .help-section .service { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 16px; }
@@ -154,12 +151,9 @@ a.verdura-phone { cursor: zoom-in; }
 .community-copy .text-link { margin-top: 20px; }
 .community-copy .text-link, .whatsapp-link { min-height: 44px; }
 .whatsapp-link .whatsapp-mark { width: 22px; height: 22px; color: var(--accent-text); }
-.community-reel { width: min(100%, 340px); justify-self: center; margin: 0; }
-.community-player { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: contain; background: var(--ink); }
-.community-reel figcaption, .workshop-description { margin-top: 10px; font-size: 13px; line-height: 1.6; color: var(--muted); }
-.workshop-description summary { width: fit-content; cursor: pointer; color: var(--ink); }
-.workshop-description p { margin-top: 6px; }
-@media (max-width: 720px) { .community-layout { grid-template-columns: 1fr; } .community-reel { justify-self: start; } }
+.community-country { color: var(--accent-text); }
+.community-player { display: block; width: min(100%, 340px); justify-self: center; height: auto; aspect-ratio: 9 / 16; object-fit: contain; background: var(--ink); }
+@media (max-width: 720px) { .community-layout { grid-template-columns: 1fr; } .community-player { justify-self: start; } }
 
 .language-switch { display: flex; align-items: center; flex-shrink: 0; gap: 6px; font-size: 12px; white-space: nowrap; }
 .language-switch > span + span { border-left: 1px solid var(--line); padding-left: 6px; }

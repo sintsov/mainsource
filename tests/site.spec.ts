@@ -289,11 +289,19 @@ test.describe('progressive enhancement without JavaScript', () => {
     }
     await expect(page.locator('#work').getByRole('heading', { level: 2, name: 'Success Stories', exact: true })).toBeVisible()
     await assertFeature(3)
+    // The homepage keeps its own small section H2; its feature should not be shrunk into the label grid's right column.
+    const presentation = (el: Element) => {
+      const style = (selector: string) => getComputedStyle(el.querySelector(selector)!)
+      return [Math.round(el.getBoundingClientRect().width), getComputedStyle(el).gridTemplateAreas, getComputedStyle(el).gap,
+        style('.case-title').fontSize, style('.case-lead').fontSize, style('.verdura-stage').padding]
+    }
+    const homePresentation = await feature.evaluate(presentation)
     await expect(page.locator('a').filter({ hasText: 'Project permalink' })).toHaveCount(0)
     await expect(page.locator(`a[href="${build.basePath}work/verdura/"]`)).toHaveCount(0)
     await visit(page, 'work/verdura/')
     expect((await page.reload())?.status()).toBe(200)
     await assertFeature(1)
+    expect(await feature.evaluate(presentation)).toEqual(homePresentation)
     await page.getByRole('link', { name: 'Back to Success Stories' }).focus()
     await page.keyboard.press('Enter')
     await assertAnchorDestination(page, 'work')
@@ -311,6 +319,9 @@ test.describe('progressive enhancement without JavaScript', () => {
     await expect(video).toHaveAttribute('preload','none')
     await expect(video).not.toHaveAttribute('autoplay','')
     expect(media).toEqual([])
+    // Silence only the test element: an unavailable hardware audio clock can stall currentTime in headless Chromium.
+    await expect(video).not.toHaveAttribute('muted', /.*/)
+    await video.evaluate((v: HTMLVideoElement) => { v.muted = true })
     await video.focus(); await page.keyboard.press('Space')
     await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.currentTime)).toBeGreaterThan(0.25)
     expect(await video.evaluate((v: HTMLVideoElement) => [v.videoWidth, v.videoHeight])).toEqual([720, 1280])
@@ -427,9 +438,20 @@ for (const lang of ['en','cnr'] as const) {
     const mark = page.locator('.whatsapp-link svg.whatsapp-mark')
     await expect(mark).toHaveAttribute('aria-hidden','true')
     expect(await mark.evaluate(el => getComputedStyle(el).color)).toBe(await page.locator('.service-icon').first().evaluate(el => getComputedStyle(el).color))
-    await expect(page.locator('#community a')).toHaveAttribute('href','https://www.instagram.com/reel/Df9137kqNFz/')
+    const community = page.locator('#community')
+    const heading = community.getByRole('heading', { level: 2, name: lang === 'en' ? 'Supporting local businesses in Montenegro' : 'Podrška lokalnim preduzećima u Crnoj Gori', exact: true })
+    const highlight = heading.locator('span')
+    await expect(highlight).toHaveText([lang === 'en' ? 'Montenegro' : 'Crnoj Gori'])
+    const accent = await highlight.evaluate(el => getComputedStyle(el).color)
+    expect(accent).toBe(await page.locator('.orange-period').first().evaluate(el => getComputedStyle(el).color))
+    expect(await heading.evaluate(el => getComputedStyle(el).color)).not.toBe(accent)
+    await expect(community.locator('details, figcaption')).toHaveCount(0)
+    await expect(community).not.toContainText(/Video description|Opis snimka|Video: Biznis info centar Tivat|Snimak: Biznis info centar Tivat/)
+    await expect(community.locator('a')).toHaveAttribute('href','https://www.instagram.com/reel/Df9137kqNFz/')
     await expect(page.locator('iframe')).toHaveCount(0)
-    const video = page.locator('#community video')
+    const video = community.locator('video')
+    await expect(video).toHaveAccessibleName(lang === 'en' ? 'Digital Clinic workshop recap in Tivat' : 'Snimak radionice Digitalna klinika u Tivtu')
+    await expect(video).not.toHaveAttribute('aria-describedby', /.+/)
     await video.scrollIntoViewIfNeeded()
     await expect(video).toHaveAttribute('poster', `${build.basePath}assets/digital-clinic-tivat-poster.webp`)
     await expect(video).toHaveAttribute('src', `${build.basePath}assets/digital-clinic-tivat.mp4`)
